@@ -10,16 +10,17 @@ index.html              Contenido completo de la web
 favicon.svg
 assets/
   css/styles.css        Estilos (tokens de color y tipografía al principio)
-  js/main.js            Menú, cifras animadas, barras de resultados, línea de trayectoria, copiar correo
-  img/                  Foto, capturas de proyectos e imagen para redes (og.jpg)
+  js/main.js            Menú, revelados, cifras, interfaces animadas, webs que se recorren con el scroll, inclinación, botonera móvil
+  img/                  Foto, capturas completas de webs (WebP), fotos de aficiones e imagen para redes (og.jpg)
   fonts/                Source Serif 4 y Schibsted Grotesk alojadas aquí (licencia OFL)
 ```
 
 ## Editar contenido
 
 - **Añadir un proyecto:** copia un bloque `<article class="case">` en `index.html`. Los casos alternan imagen a izquierda y derecha solos.
-  - Con captura: pon la imagen en `assets/img/` (1200×750, JPG) dentro de `<figure class="frame">`, que le pone el marco de navegador.
-  - Sin captura: usa un panel `<div class="panel panel--navy|sea|slate">` con cifras (`.panel__figures`) y etiquetas (`.panel__chips`).
+  - Web con captura: haz una captura de página completa a 1280 px de ancho, guárdala como WebP de 1000 px de ancho en `assets/img/` y ponla dentro de `<div class="frame__view" data-scroll-shot>`. La web se recorre sola al hacer scroll.
+  - Sin captura: usa una recreación como `.booking` o `.shop`, con sus cifras reales.
+  - Si en la captura salen menores, difumina o recorta esa parte antes de publicarla.
 - **Barras de resultados:** los valores van en CSS (`.growth__row--1`, `--2`, `--3`) en porcentaje sobre el valor más alto.
 - **Colores y tipografía:** variables en `:root` al inicio de `styles.css`.
 
