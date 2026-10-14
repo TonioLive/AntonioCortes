@@ -10,7 +10,7 @@ index.html              Contenido completo de la web
 favicon.svg
 assets/
   css/styles.css        Estilos (tokens de color y tipografía al principio)
-  js/main.js            Menú, filtro de proyectos, vista previa, línea de trayectoria, copiar correo
+  js/main.js            Menú, cifras animadas, barras de resultados, línea de trayectoria, copiar correo
   img/                  Foto, capturas de proyectos e imagen para redes (og.jpg)
   fonts/                Source Serif 4 y Schibsted Grotesk alojadas aquí (licencia OFL)
 ```
