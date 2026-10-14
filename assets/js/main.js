@@ -1,9 +1,7 @@
 (() => {
   "use strict";
 
-  const root = document.documentElement;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
 
   /* ---------------------------------------------------------------
      Cabecera: fondo al hacer scroll y se oculta al bajar
@@ -39,108 +37,45 @@
   });
 
   /* ---------------------------------------------------------------
-     Filtro de proyectos
+     Cifras de la portada: cuentan desde 0 al cargar
      --------------------------------------------------------------- */
-  const filters = document.querySelectorAll("[data-filter]");
-  const projects = document.querySelectorAll("[data-project-list] .project");
-  const filterStatus = document.querySelector("[data-filter-status]");
-
-  filters.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const value = btn.dataset.filter;
-      filters.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-      let shown = 0;
-      projects.forEach((p) => {
-        const match = value === "all" || p.dataset.areas.split(" ").includes(value);
-        p.classList.toggle("is-filtered", !match);
-        p.classList.remove("is-entering");
-        if (match) {
-          shown += 1;
-          if (!reduceMotion.matches) {
-            void p.offsetWidth; // reinicia la animación
-            p.classList.add("is-entering");
-          }
-        }
-      });
-      filterStatus.textContent = `${shown} ${shown === 1 ? "proyecto" : "proyectos"}`;
-    });
-  });
+  const counters = document.querySelectorAll("[data-count]");
+  if (!reduceMotion.matches) {
+    counters.forEach((el) => { el.textContent = "0"; });
+    setTimeout(() => {
+      const start = performance.now();
+      const duration = 1400;
+      const step = (now) => {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        counters.forEach((el) => {
+          el.textContent = String(Math.round(Number(el.dataset.count) * eased));
+        });
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, 1000);
+  }
 
   /* ---------------------------------------------------------------
-     Vista previa que sigue al cursor (solo ratón)
+     Barras de crecimiento: se completan al entrar en pantalla
      --------------------------------------------------------------- */
-  const preview = document.querySelector("[data-preview]");
-  let previewOn = false;
-  let rafId = null;
-  const pos = { x: 0, y: 0, tx: 0, ty: 0, tilt: 0 };
-
-  const tick = () => {
-    const dx = pos.tx - pos.x;
-    pos.x += dx * 0.16;
-    pos.y += (pos.ty - pos.y) * 0.16;
-    pos.tilt += (Math.max(-6, Math.min(6, dx * 0.08)) - pos.tilt) * 0.12;
-    preview.style.setProperty("--x", `${pos.x.toFixed(1)}px`);
-    preview.style.setProperty("--y", `${pos.y.toFixed(1)}px`);
-    preview.style.setProperty("--tilt", `${pos.tilt.toFixed(2)}deg`);
-    rafId = requestAnimationFrame(tick);
-  };
-
-  const setTarget = (e) => {
-    const w = preview.offsetWidth || 380;
-    const h = preview.offsetHeight || 240;
-    const gap = 28;
-    let x = e.clientX + gap;
-    if (x + w > window.innerWidth - 16) x = e.clientX - w - gap;
-    let y = e.clientY - h / 2;
-    y = Math.max(16, Math.min(window.innerHeight - h - 16, y));
-    pos.tx = x;
-    pos.ty = y;
-  };
-
-  const onEnter = (e) => {
-    const media = e.currentTarget.querySelector(".project__media");
-    if (!media) return;
-    preview.replaceChildren(...Array.from(media.children, (n) => n.cloneNode(true)));
-    setTarget(e);
-    if (!preview.classList.contains("is-visible")) {
-      pos.x = pos.tx;
-      pos.y = pos.ty;
+  const growth = document.querySelector("[data-growth]");
+  if (growth) {
+    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+      growth.classList.add("is-in");
+    } else {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            growth.classList.add("is-in");
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.4 });
+      io.observe(growth);
     }
-    preview.classList.add("is-visible");
-    if (rafId === null) rafId = requestAnimationFrame(tick);
-  };
-
-  const onLeave = () => {
-    preview.classList.remove("is-visible");
-    setTimeout(() => {
-      if (!preview.classList.contains("is-visible") && rafId !== null) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-      }
-    }, 300);
-  };
-
-  const enablePreview = () => {
-    const want = finePointer.matches && !reduceMotion.matches;
-    if (want === previewOn) return;
-    previewOn = want;
-    root.classList.toggle("has-preview", want);
-    projects.forEach((p) => {
-      if (want) {
-        p.addEventListener("mouseenter", onEnter);
-        p.addEventListener("mousemove", setTarget);
-        p.addEventListener("mouseleave", onLeave);
-      } else {
-        p.removeEventListener("mouseenter", onEnter);
-        p.removeEventListener("mousemove", setTarget);
-        p.removeEventListener("mouseleave", onLeave);
-      }
-    });
-    if (!want) onLeave();
-  };
-  enablePreview();
-  finePointer.addEventListener("change", enablePreview);
-  reduceMotion.addEventListener("change", enablePreview);
+  }
 
   /* ---------------------------------------------------------------
      Línea de la trayectoria ligada al scroll
@@ -159,9 +94,7 @@
     });
   };
 
-  /* ---------------------------------------------------------------
-     Scroll agrupado en un frame
-     --------------------------------------------------------------- */
+  /* Scroll agrupado en un frame */
   let ticking = false;
   const onScroll = () => {
     if (ticking) return;
