@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://toniolive.github.io/AntonioCortes/sitemap.xml

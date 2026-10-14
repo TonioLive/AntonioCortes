@@ -23,14 +23,12 @@ assets/
   - Sin captura: usa un panel `<div class="panel panel--navy|sea|slate|paper">`.
 - **Colores y tipografía:** variables en `:root` al inicio de `styles.css`.
 
-## Publicar
+## Publicación
 
-Son archivos estáticos: sirven en cualquier hosting que entregue HTML.
+Publicada con GitHub Pages (rama `main`, raíz): **https://toniolive.github.io/AntonioCortes/**
 
-**GitHub Pages:** *Settings → Pages → Deploy from a branch → `main` / root*.
-Ojo: la cuenta ya tiene `dubedition.es` en la web principal (`toniolive.github.io`), así que sin dominio propio el portfolio saldría en `dubedition.es/portfolio`. Con un dominio propio, se añade un archivo `CNAME` con el dominio y los registros DNS de GitHub Pages en el registrador.
+Cada push a `main` se publica solo en uno o dos minutos. Todas las rutas son relativas, así que funciona también si algún día se cambia a un dominio propio (archivo `CNAME` + DNS). En ese caso hay que actualizar la URL en `canonical`, `og:url`, `og:image`, los datos estructurados y `sitemap.xml`.
 
 ## Pendiente
 
 - Enlace a LinkedIn en la sección de contacto.
-- Cuando haya URL definitiva: poner la URL absoluta en `og:image`, añadir `<link rel="canonical">` y `sitemap.xml`.
