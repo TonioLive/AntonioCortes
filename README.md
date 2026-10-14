@@ -23,17 +23,14 @@ assets/
   - Sin captura: usa un panel `<div class="panel panel--navy|sea|slate|paper">`.
 - **Colores y tipografía:** variables en `:root` al inicio de `styles.css`.
 
-## Publicar en Vercel
+## Publicar
 
-1. vercel.com → *Add New* → *Project* → importar `TonioLive/portfolio`.
-2. Framework preset: **Other**. Sin build command. Output: raíz.
-3. *Deploy*. Cada push a `main` se publica solo.
-4. Dominio propio: *Settings → Domains* y añadir los registros DNS que indique Vercel.
+Son archivos estáticos: sirven en cualquier hosting que entregue HTML.
 
-> No usar GitHub Pages en este repo: la cuenta ya tiene `dubedition.es` en la web principal y el portfolio saldría en `dubedition.es/portfolio`.
+**GitHub Pages:** *Settings → Pages → Deploy from a branch → `main` / root*.
+Ojo: la cuenta ya tiene `dubedition.es` en la web principal (`toniolive.github.io`), así que sin dominio propio el portfolio saldría en `dubedition.es/portfolio`. Con un dominio propio, se añade un archivo `CNAME` con el dominio y los registros DNS de GitHub Pages en el registrador.
 
 ## Pendiente
 
-- Foto en alta resolución (la actual sale del CV y es pequeña): reemplazar `assets/img/antonio.jpg` (vertical, 1000×1480 aprox.).
 - Enlace a LinkedIn en la sección de contacto.
 - Cuando haya URL definitiva: poner la URL absoluta en `og:image`, añadir `<link rel="canonical">` y `sitemap.xml`.
