@@ -1607,8 +1607,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   height: 1px;
   background: var(--ink-2);
 }
-.timeline__item--minor .timeline__role { font-size: var(--fs-md); }
-.timeline__item--minor .timeline__org { max-width: 60ch; }
 
 /* Formación */
 .education {
